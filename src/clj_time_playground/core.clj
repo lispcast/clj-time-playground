@@ -1,6 +1,7 @@
 (ns clj-time-playground.core
   (:require [clj-time.core :as time]
-            [clj-time.format :as format]))
+            [clj-time.format :as format]
+            [clj-time.coerce :as coerce]))
 
 ;; Dates and times in timezones
 
@@ -181,11 +182,22 @@ d2;; => #object[org.joda.time.DateTime 0x21559bcc "2015-04-05T00:00:00.000Z"]
       )))
 
 
+;; Coersion
 
+(coerce/to-timestamp (time/now))
+;; => #inst "2016-11-05T19:38:18.852000000-00:00"
 
+(coerce/to-string #inst "2016-10-01")
+;; => "2016-10-01T00:00:00.000Z"
 
+(coerce/to-long #inst "2015-01-01")
+;; => 1420070400000
 
+(coerce/to-date-time 1420070400000)
+;; => #object[org.joda.time.DateTime 0x6f09f809 "2015-01-01T00:00:00.000Z"]
 
+(coerce/from-date #inst "2014-09-09")
+;; => #object[org.joda.time.DateTime 0x41e96bba "2014-09-09T00:00:00.000Z"]
 
 
 
