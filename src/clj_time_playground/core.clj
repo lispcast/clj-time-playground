@@ -37,16 +37,47 @@
 ;; => 2016
 ;; => #object[org.joda.time.LocalDate 0x2c7c4a58 "2016-11-05"]
 
+;; Periods of time
+
+(time/hours 4)
+;; => #object[org.joda.time.Hours 0x2c9086ee "PT4H"]
+
+(time/days 3)
+;; => #object[org.joda.time.Days 0x151fdec3 "P3D"]
+
+(-> 3 time/days)
+;; => #object[org.joda.time.Days 0x151fdec3 "P3D"]
+
+(time/plus (time/now) (time/days 3))
+;; => #object[org.joda.time.DateTime 0x59e5b69 "2016-11-08T17:38:25.768Z"]
+;; => #object[org.joda.time.DateTime 0x4c3608b8 "2016-11-05T17:38:01.175Z"]
+
+(-> 3 time/days time/ago)
+;; => #object[org.joda.time.DateTime 0x7c8a6480 "2016-11-02T17:39:17.462Z"]
+
+(-> 6 time/hours time/from-now)
+;; => #object[org.joda.time.DateTime 0x101ca2cb "2016-11-05T23:39:42.111Z"]
+
+(time/before? (time/now) (-> 3 time/years time/from-now))
+;; => true
+
+(time/after? ...)
 
 
+(def now (time/now))
+(= now now)
+;; => true
 
+(def d1 (time/date-time 2015 4 5))
+(def d2 (time/plus (time/date-time 2014 4 5) (time/years 1)))
+d1;; => #object[org.joda.time.DateTime 0x1bf6fa7f "2015-04-05T00:00:00.000Z"]
+d2;; => #object[org.joda.time.DateTime 0x21559bcc "2015-04-05T00:00:00.000Z"]
 
+(= d1 d2);; => true
 
-
-
-
-
-
-
-
+(time/in-weeks (time/hours 72)) ;; => #object[org.joda.time.Hours 0x1f7446ad "PT72H"]
+;; => 0
+;; => 3
+;; => 3
+;; => 4320
 
