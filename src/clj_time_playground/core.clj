@@ -1,5 +1,6 @@
 (ns clj-time-playground.core
-  (:require [clj-time.core :as time]))
+  (:require [clj-time.core :as time]
+            [clj-time.format :as format]))
 
 ;; Dates and times in timezones
 
@@ -109,20 +110,45 @@ d2;; => #object[org.joda.time.DateTime 0x21559bcc "2015-04-05T00:00:00.000Z"]
 (time/extend this-week (time/months 6))
 ;; => #object[org.joda.time.Interval 0x418a46ae "2016-11-05T18:36:20.414Z/2017-05-12T18:36:20.414Z"]
 
+;; Formatting and parsing
+
+(def bdt (format/formatters :basic-date-time))
+;; => #object[org.joda.time.format.DateTimeFormatter 0x3e3ba8a8 "org.joda.time.format.DateTimeFormatter@3e3ba8a8"]
+
+(def f (format/formatter "yyyy MMM d"))
+;; => #object[org.joda.time.format.DateTimeFormatter 0x4fec0e32 "org.joda.time.format.DateTimeFormatter@4fec0e32"]
+
+(format/unparse bdt (time/now))
+;; => "20161105T185630.192Z"
+;; => "2016 Nov 5"
+
+(format/parse f "2013 May 9")
+;; => #object[org.joda.time.DateTime 0x36ac1681 "2013-05-09T00:00:00.000Z"]
+
+(format/parse-local f "2013 May 9")
+;; => #object[org.joda.time.LocalDateTime 0x3843a61e "2013-05-09T00:00:00.000"]
+
+(format/parse-local-date f "2013 May 9")
+;; => #object[org.joda.time.LocalDate 0x2696c8af "2013-05-09"]
+
+(format/parse-local-time "20:09:08")
+;; => #object[org.joda.time.LocalTime 0x1d04d36f "20:09:08.000"]
+
+(def f-central (format/with-zone f (time/time-zone-for-id "US/Central")))
+
+(format/parse f-central "2013 May 9")
+;; => #object[org.joda.time.DateTime 0x11b4423d "2013-05-09T00:00:00.000-05:00"]
+
+(def f-french (format/with-locale f (java.util.Locale/FRENCH)))
+
+(format/parse f-french "2013 mai 9")
+;; => #object[org.joda.time.DateTime 0x27aeaf7 "2013-05-09T00:00:00.000Z"]
 
 
+(def d (format/parse f-central "2013 May 9"))
 
-
-
-
-
-
-
-
-
-
-
-
+(format/unparse f-french d)
+;; => "2013 mai 9"
 
 
 
