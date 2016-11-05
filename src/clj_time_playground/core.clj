@@ -150,6 +150,47 @@ d2;; => #object[org.joda.time.DateTime 0x21559bcc "2015-04-05T00:00:00.000Z"]
 (format/unparse f-french d)
 ;; => "2013 mai 9"
 
+;; Testing with time
+
+(def test-time (time/date-time 2010 9 9 16))
+
+
+(time/do-at test-time
+
+  (time/now)
+  )
+;; => #object[org.joda.time.DateTime 0x57662815 "2010-09-09T16:00:00.000Z"]
+
+(time/now)
+;; => #object[org.joda.time.DateTime 0x53bb0135 "2016-11-05T19:12:17.853Z"]
+
+(clojure.test/use-fixtures :once
+  (fn [tests]
+    (time/do-at test-time
+      (tests))))
+
+(deftest six-month-email
+  (time/do-at test-time
+    ;; do your code
+    )
+
+  (time/do-at (-> test-time
+                (time/plus (time/months 6))
+                (time/plus (time/days 1)))
+    (is ;;whatever
+      )))
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
