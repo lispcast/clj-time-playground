@@ -81,3 +81,52 @@ d2;; => #object[org.joda.time.DateTime 0x21559bcc "2015-04-05T00:00:00.000Z"]
 ;; => 3
 ;; => 4320
 
+;; Intervals of time
+
+(def now (time/now))
+(def this-week (time/interval now (time/plus now (time/days 7))))
+;; => #object[org.joda.time.Interval 0x66a07242 "2016-11-05T18:36:20.414Z/2016-11-12T18:36:20.414Z"]
+
+(time/in-days this-week)
+
+(def last-week (time/interval (time/minus now (time/days 7)) now))
+
+(time/abuts? last-week this-week)
+
+(time/within? this-week (time/plus now (time/days 10)))
+
+(time/overlaps? this-week (time/interval
+                            (time/plus now (time/days 6))
+                            (time/plus now (time/days 15))))
+;; => true
+
+(time/overlap this-week (time/interval
+                            (time/plus now (time/days 6))
+                            (time/plus now (time/days 15))))
+;; => #object[org.joda.time.Interval 0x6bbaf68c "2016-11-11T18:36:20.414Z/2016-11-12T18:36:20.414Z"]
+
+
+(time/extend this-week (time/months 6))
+;; => #object[org.joda.time.Interval 0x418a46ae "2016-11-05T18:36:20.414Z/2017-05-12T18:36:20.414Z"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
